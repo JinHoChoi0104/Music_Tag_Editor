@@ -1,37 +1,26 @@
-package Text; // 클래스(interface, enum..)의 묶음으로서 하나의 디렉토리(폴더)이다.
+package MusicTag; // 클래스(interface, enum..)의 묶음으로서 하나의 디렉토리(폴더)이다.
 
 import java.io.File;
 
-//import org.jaudiotagger.audio.AudioFile;
-
-//import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-
-
-//import javax.imageio.ImageIO;
-//import javax.imageio.stream.FileImageInputStream;
-//import javax.imageio.stream.FileImageOutputStream;
-//import org.jaudiotagger.audio;//.AudioFileIO;
+import javax.swing.text.html.HTML.Tag;
 
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.mp3.MP3File;
-import org.jaudiotagger.tag.TagField;
-import org.jaudiotagger.tag.id3.AbstractID3v2Frame;
+import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.id3.AbstractID3v2Tag;
-import org.jaudiotagger.tag.id3.ID3v24Tag;
-import org.jaudiotagger.tag.id3.framebody.FrameBodyAPIC;
-import org.jaudiotagger.tag.id3.framebody.FrameBodyTPE1;
-import org.jaudiotagger.tag.id3.valuepair.TextEncoding;
-import org.jaudiotagger.tag.reference.PictureTypes;
-public class Hello {
+public class Music {
     File fs;
     
     public static void main(String args[]){
-         new SearchMp3("Directory path here").go();
+    	//fs = new File("C:\\Users\\82107\\Desktop\\Github\\Plz");
+         SearchMp3("C:\\Users\\82107\\Desktop\\Github\\Plz\\NAAN.mp3");//.go();
+    	
     }
     
+   
+    
     public void go(){
-        if(fs.isDirectory()){
+        if(fs.isDirectory()){ //해당 패스에서 디렉토리(폴더)가 존재하는지 확인. 없으면 false 리턴
             File list[] = fs.listFiles();
             for(File f : list){
                 try{
@@ -57,7 +46,8 @@ public class Hello {
             }
         }
     }
-    public SearchMp3(String path) {
+    public void SearchMp3(String path) {
         fs = new File(path);
     }
+    
 }
