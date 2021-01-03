@@ -3,29 +3,54 @@ package MusicTag; // 클래스(interface, enum..)의 묶음으로서 하나의 디렉토리(폴더
 import java.io.File;
 import java.util.Scanner;
 
+import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
-import org.jaudiotagger.audio.mp3.MP3File;
 import org.jaudiotagger.tag.FieldKey;
-import org.jaudiotagger.tag.id3.ID3v1Tag;
+import org.jaudiotagger.tag.Tag;
 
 
 public class Music {
-	public static String decoding = "ISO-8859-1";  
-	public static String encoding = "EUC-KR"; 
-	
 	public static void main(String args[]){
 		//renameFile("NAAN.mp3","aa.mp3");
 		
-		/* get input from std
+		// get input from std
 		Scanner console = new Scanner(System.in);
-		System.out.print("Enter song name: ");
+		System.out.print("Enter mp3 file path: ");
 		String song = console.nextLine();	  
-		File file = new File("C:\\Users\\82107\\Desktop\\Github\\Music_Tag_Editor\\MusicTagEditor\\"+ song + ".mp3");  // MP3 파일의 경로를 이용하여 File Object를 생성한다.  		  
-		*/
+		File path = new File(song);  // MP3 파일의 경로를 이용하여 File Object를 생성한다.  		  
 		
-		String path = "C:\\Users\\82107\\Desktop\\Github\\Music_Tag_Editor\\MusicTagEditor\\BRLLNT - Blessed.mp3";
-		rewriteTag(path);
+		File fileList[] = path.listFiles();	
 		
+		String fileName = "";
+		String artist = "";
+		String title = "";
+		int idx = 0;
+	
+
+		if(fileList.length > 0){
+			for(File file : fileList)
+			{
+				fileName = file.getName();
+				if(fileName.matches(".*.mp3")) {
+					
+					if(fileName.matches(".* - .*"))
+					{
+						idx = fileName.indexOf(" - ");						
+						artist = fileName.substring(0,idx);
+						title = fileName.substring(idx+3);
+					//	rewriteTag(fileName, artist, title);
+					
+						System.out.println("wow!" + fileName);
+					}	
+					//else ;{
+					//else
+					//	System.out.println("error! there is no \"-\" ");//+ fileName);
+					
+					
+				}
+			}
+		}
+		System.out.println("end!");
 	}
     
    
@@ -36,30 +61,19 @@ public class Music {
 	    if( file.exists() ) file.renameTo( fileNew );
 	}
 	
-	public static void rewriteTag(String path) {
+	public static void rewriteTag(String path, String artist, String title) {
 		File file = new File(path);  // MP3 파일의 경로를 이용하여 File Object를 생성한다.  		  
 		try {  
-		    MP3File audioFile = (MP3File)AudioFileIO.read(file);  
-		    ID3v1Tag tag = new ID3v1Tag();  
-		      
-		 //   tag.setTitle(" ");
-		 //   tag.setArtist(" ");
-		 //   audioFile.setTag(tag);  
-		//    AudioFileIO.write(audioFile);
-		    
-		    
-		    tag.setTitle("big");
-		    tag.setArtist(new String("나".getBytes(encoding), decoding));      
-		    audioFile.setTag(tag);  
-		    AudioFileIO.write(audioFile); // 까먹지 말고 write 해줘야 수정사항이 저장된다. 
-		   
-		    /*
-		    System.out.println("Tag : " + tag);
-		    String artist = tag.getFirst(FieldKey.ARTIST);
-		    System.out.println("Artist : " + artist);
-		    String title = tag.getFirst(FieldKey.TITLE);
-		    System.out.println("Title : " + title);
-		    */
+			//make modification to the tag class
+		    AudioFile f = AudioFileIO.read(file);
+			Tag tag = f.getTag();
+		 	tag.setField(FieldKey.ARTIST,artist);
+		 	tag.setField(FieldKey.TITLE,title);
+		 	
+		 	//and then commit the change
+		 	//f.commit();
+		 	AudioFileIO.write(f);
+		 	 
 		} catch (Exception e) {  
 		    e.printStackTrace();  
 		}  
