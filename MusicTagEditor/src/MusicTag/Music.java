@@ -9,17 +9,10 @@ import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
 
 public class Music {
+	
 	public static void main(String args[]) {
 		// renameFile("NAAN.mp3","aa.mp3");
 
-		
-		
-		
-		
-		
-		
-		
-		
 		// 1.add files by path
 		addByPath();
 
