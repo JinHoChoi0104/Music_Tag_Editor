@@ -93,34 +93,37 @@ public class test {
 		 * about Clear Button
 		 */
 		JButton ClearButton = new JButton("Clear All");
+		ClearButton.setFont(new Font("±¼¸²", Font.PLAIN, 14));
 		ClearButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				clearList();
-				MusicList.setText("");
+				phrase2();
 			}
 		});
-		ClearButton.setBounds(32, 502, 128, 43);
+		ClearButton.setBounds(195, 500, 120, 40);
 		frame.getContentPane().add(ClearButton);
+		
 		
 		/*
 		 * about Running Button
 		 */
 		JButton RunningButton = new JButton("Run Edit");
+		RunningButton.setFont(new Font("±¼¸²", Font.PLAIN, 14));
 		RunningButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				RunTagEditor();
 			}
 		});
-		RunningButton.setBounds(310, 502, 128, 43);
+		RunningButton.setBounds(339, 500, 120, 40);
 		frame.getContentPane().add(RunningButton);
 		
 		
 		
 		
-
+	
 		
 		/*
-		 * about PathInputWindow (textfield)
+		 * about PathInputWindow (textField)
 		 */
 		PathInput.setBounds(32, 26, 427, 21);
 		frame.getContentPane().add(PathInput);
@@ -136,43 +139,57 @@ public class test {
 					PathInput.setText("");
 				}
 			}
-
 			public void focusLost(FocusEvent e) {
 				if (PathInput.getText().isBlank())
 					phrase1();
 			}
 		});
 
+		PathInput.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) { //Press Enter key
+				File fileList[] = new File(PathInput.getText()).listFiles();
+				findMusicFile(fileList);
+			}
+		});
 		
 		
 		
 		
 		
-		
+		/*
+		 * about MusicListWindow (textArea)
+		 */
 		MusicList.setBounds(33, 72, 426, 408);
 		frame.getContentPane().add(MusicList);
 		phrase2();
 		new FileDrop(System.out, MusicList, /* dragBorder, */ new FileDrop.Listener() {
 			public void filesDropped(java.io.File[] fileList) {
-				MusicList.setText(""); 
-				MusicList.setForeground(Color.black);
-				Font font1 = new Font("¸¼Àº °íµñ", Font.PLAIN, 12);
-				MusicList.setFont(font1);
-				for( int i = 0; i < fileList.length; i++ ) { //fileName = file.getName(); try
-					String fileName = fileList[i].getName();
-					if (fileName.matches(".*.mp3")) {						  
-						try{						
-							index++;						
-							pathlist.add(fileList[i].getCanonicalPath());							
-							namelist.add(fileName);							
-							MusicList.append(fileName + "\n"); //show up file name					
-						}						
-						catch( java.io.IOException e ) { } 					
-					} // end for: through each dropped file				
-				}
+				findMusicFile(fileList);
 			} // end filesDropped
 		}); // end FileDrop.Listener
 
+	}
+	
+	public void findMusicFile(File[] fileList) {
+		if (MusicList.getForeground() != Color.black) {
+			MusicList.setText(""); 
+			MusicList.setForeground(Color.black);
+			Font font1 = new Font("¸¼Àº °íµñ", Font.PLAIN, 12);
+			MusicList.setFont(font1);
+		}
+		for( int i = 0; i < fileList.length; i++ ) { //fileName = file.getName(); try
+			String fileName = fileList[i].getName();
+			if (fileName.matches(".*.mp3")) {						  
+				try{						
+					index++;						
+					pathlist.add(fileList[i].getCanonicalPath());							
+					namelist.add(fileName);							
+					MusicList.append(fileName + "\n"); //show up file name					
+				}						
+				catch( java.io.IOException e ) { } 					
+			} // end for: through each dropped file				
+		}
+		
 	}
 	
 	public void clearList() {
