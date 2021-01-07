@@ -36,7 +36,7 @@ public class Music {
 		int idx2 = 0; // index of ".mp3"
 
 		if (fileList.length > 0) {
-			for (File file : fileList) {
+			for (File file : fileList) { //push file in to 'file' from 'fileList'
 				fileName = file.getName();
 				if (fileName.matches(".*.mp3")) {
 

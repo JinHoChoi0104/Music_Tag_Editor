@@ -8,5 +8,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="C:/Users/82107/Desktop/Github/Music_Tag_Editor/MusicTagEditor/jaudiotagger-2.2.6-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="C:/Users/82107/Desktop/Github/Music_Tag_Editor/MusicTagEditor/jaudiotagger-2.2.6-SNAPSHOT-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/82107/Desktop/Github/Music_Tag_Editor/MusicTagEditor/filedrop.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
