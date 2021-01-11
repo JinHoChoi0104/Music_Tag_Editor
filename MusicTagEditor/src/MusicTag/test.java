@@ -23,6 +23,7 @@ import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
 
 import net.iharder.dnd.FileDrop;
+import javax.swing.JPanel;
 
 public class test {
 	
@@ -135,8 +136,8 @@ public class test {
 		/*
 		 * about MusicListWindow (textArea)
 		 */
-		MusicList.setBounds(33, 72, 426, 408);
-		frame.getContentPane().add(MusicList);
+		scrollPane.setBounds(33, 72, 426, 408);
+		frame.getContentPane().add(scrollPane);
 		phrase2();
 		new FileDrop(System.out, MusicList, /* dragBorder, */ new FileDrop.Listener() {
 			public void filesDropped(java.io.File[] fileList) {
@@ -256,5 +257,4 @@ public class test {
 		}
 
 	}
-
 }
