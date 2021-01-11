@@ -12,6 +12,8 @@ import java.util.LinkedList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -27,9 +29,11 @@ public class test {
 	private JFrame frame;
 
 	private JTextField PathInput = new JTextField("");
-	private JTextField textField_1;
-	private JTextArea MusicList = new JTextArea();
 
+	private JTextArea MusicList = new JTextArea();
+	JScrollPane scrollPane = new JScrollPane(MusicList);
+	//contentPane.add(scrollPane);
+	
 	/**
 	 * Music list
 	 * namelist will be shown on TextArea
@@ -83,44 +87,16 @@ public class test {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		/*
+		 * about Main Window (JFrame)
+		 */
 		frame = new JFrame();
-		frame.setBounds(100, 100, 510, 610);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setBounds(550, 100, 510, 610);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //what is this for???
 		frame.getContentPane().setLayout(null);
-
-		
-		/*
-		 * about Clear Button
-		 */
-		JButton ClearButton = new JButton("Clear All");
-		ClearButton.setFont(new Font("±¼¸²", Font.PLAIN, 14));
-		ClearButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				clearList();
-				phrase2();
-			}
-		});
-		ClearButton.setBounds(195, 500, 120, 40);
-		frame.getContentPane().add(ClearButton);
-		
-		
-		/*
-		 * about Running Button
-		 */
-		JButton RunningButton = new JButton("Run Edit");
-		RunningButton.setFont(new Font("±¼¸²", Font.PLAIN, 14));
-		RunningButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				RunTagEditor();
-			}
-		});
-		RunningButton.setBounds(339, 500, 120, 40);
-		frame.getContentPane().add(RunningButton);
-		
-		
-		
-		
+		frame.setTitle("Music Tag Editor");
 	
+		
 		
 		/*
 		 * about PathInputWindow (textField)
@@ -168,6 +144,38 @@ public class test {
 			} // end filesDropped
 		}); // end FileDrop.Listener
 
+		MusicList.setEditable (false); //make text area uneditalbe
+		
+		
+		
+
+		/*
+		 * about Clear Button
+		 */
+		JButton ClearButton = new JButton("Clear All");
+		ClearButton.setFont(new Font("±¼¸²", Font.BOLD, 14));
+		ClearButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				clearList();
+				phrase2();
+			}
+		});
+		ClearButton.setBounds(195, 500, 120, 40);
+		frame.getContentPane().add(ClearButton);
+		
+		
+		/*
+		 * about Running Button
+		 */
+		JButton RunningButton = new JButton("Run Edit");
+		RunningButton.setFont(new Font("±¼¸²", Font.BOLD, 14));
+		RunningButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RunTagEditor();
+			}
+		});
+		RunningButton.setBounds(339, 500, 120, 40);
+		frame.getContentPane().add(RunningButton);
 	}
 	
 	public void findMusicFile(File[] fileList) {
@@ -203,6 +211,7 @@ public class test {
 		String fileName, artist, title; // = "";
 		int idx = 0; // index of " - "
 		int idx2 = 0; // index of ".mp3", 
+		int cnt = 0, fail = 0; // count of file(s) successfully modified
 
 		for(int i=0 ; i<index;i++) {
 			fileName = namelist.get(i);
@@ -212,16 +221,20 @@ public class test {
 				artist = fileName.substring(0, idx);
 				title = fileName.substring(idx + 3, idx2);
 				rewriteTag(pathlist.get(i), artist, title);
+				cnt++;
 			} else {
 				MusicList.setForeground(Color.red);
 				if (MusicList.getText().isBlank())
-					MusicList.append(" ERROR! There is no \" - \" in: \n");
-				MusicList.append(fileName + "\n");
+					MusicList.append(" ERROR! There is no \" - \" in:\n");
+				fail++;
+				MusicList.append(fail + ". " + fileName + "\n");
 			}
 		}
 		if (MusicList.getText().isBlank())
 			phrase2();
 		clearList();
+		JOptionPane.showMessageDialog(null,cnt+" file(s) successfully modified\n"+fail+
+				" file(s) failed to modified","Information",JOptionPane.WARNING_MESSAGE);
 	}
 
 	public static void rewriteTag(String path, String artist, String title) {
