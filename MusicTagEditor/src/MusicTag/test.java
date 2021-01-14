@@ -13,9 +13,12 @@ import java.util.LinkedList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
@@ -23,15 +26,15 @@ import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
 
 import net.iharder.dnd.FileDrop;
-import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JList;
 
-public class test {
+public class test extends JPanel {
 	
-	private JFrame frame;
+	//private JFrame frame;
 
 	private JTextField PathInput = new JTextField("");
-
-	private JTextArea MusicList = new JTextArea();
+	private JTable MusicList = new JTable();
 	JScrollPane scrollPane = new JScrollPane(MusicList);
 	//contentPane.add(scrollPane);
 	
@@ -47,8 +50,28 @@ public class test {
 	private static int index = 0; 
 	
 	/**
+	 * Create the application.
+	 */
+	public test() {
+		//setLayout(null);
+		String colNames[] = {"ÆÄÀÏÀÌ¸§", "Artist", "Title"};
+		DefaultTableModel model =  new DefaultTableModel(colNames, 0);
+		
+		model.addRow(new Object[] {"haha","È«±æµ¿","011-5-1177"});
+		
+		MusicList = new JTable(model);
+		scrollPane = new JScrollPane(MusicList);
+		add(scrollPane);
+		initialize();
+	}
+	
+	
+	
+	/**
 	 * Launch the application.
 	 */
+	
+	/*
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -60,15 +83,21 @@ public class test {
 				}
 			}
 		});
-
+	}*/
+	
+	public static void main(String[] args) {
+		test panel = new test();
+		JFrame win = new JFrame();
+		win.add(panel);
+		win.setBounds(550, 100, 510, 610);
+		win.setTitle("Music Tag Editor");
+		//win.setSize(540,400);
+		win.setVisible(true);
 	}
+	
 
-	/**
-	 * Create the application.
-	 */
-	public test() {
-		initialize();
-	}
+	
+
 
 	public void phrase1() { // Path request phrases
 		Font font2 = new Font("¸¼Àº °íµñ", Font.ITALIC, 12);
@@ -81,7 +110,7 @@ public class test {
 		Font font2 = new Font("¸¼Àº °íµñ", Font.ITALIC, 12);
 		MusicList.setForeground(Color.gray);
 		MusicList.setFont(font2);
-		MusicList.setText("Drag and drop files here");
+		//MusicList.setText("Drag and drop files here");
 	}
 
 	/**
@@ -91,19 +120,22 @@ public class test {
 		/*
 		 * about Main Window (JFrame)
 		 */
+		
+		/*
 		frame = new JFrame();
 		frame.setBounds(550, 100, 510, 610);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //what is this for???
 		frame.getContentPane().setLayout(null);
 		frame.setTitle("Music Tag Editor");
-	
+		*/
 		
 		
 		/*
 		 * about PathInputWindow (textField)
 		 */
 		PathInput.setBounds(32, 26, 427, 21);
-		frame.getContentPane().add(PathInput);
+		//frame.getContentPane().
+		add(PathInput);
 		PathInput.setColumns(10);
 		phrase1();
 
@@ -126,6 +158,7 @@ public class test {
 			public void actionPerformed(ActionEvent e) { //Press Enter key
 				File fileList[] = new File(PathInput.getText()).listFiles();
 				findMusicFile(fileList);
+				phrase1();
 			}
 		});
 		
@@ -136,16 +169,20 @@ public class test {
 		/*
 		 * about MusicListWindow (textArea)
 		 */
-		scrollPane.setBounds(33, 72, 426, 408);
-		frame.getContentPane().add(scrollPane);
+		scrollPane.setBounds(33, 80, 426, 390);
+		//frame.getContentPane().
+		add(scrollPane);
 		phrase2();
+		
 		new FileDrop(System.out, MusicList, /* dragBorder, */ new FileDrop.Listener() {
 			public void filesDropped(java.io.File[] fileList) {
 				findMusicFile(fileList);
+				DefaultTableModel model = (DefaultTableModel)MusicList.getModel();
+				model.addRow(new String[] {"","",""});
 			} // end filesDropped
 		}); // end FileDrop.Listener
 
-		MusicList.setEditable (false); //make text area uneditalbe
+		//MusicList.setEditable (false); //make text area uneditalbe
 		
 		
 		
@@ -162,7 +199,8 @@ public class test {
 			}
 		});
 		ClearButton.setBounds(195, 500, 120, 40);
-		frame.getContentPane().add(ClearButton);
+		//frame.getContentPane().
+		add(ClearButton);
 		
 		
 		/*
@@ -176,12 +214,18 @@ public class test {
 			}
 		});
 		RunningButton.setBounds(339, 500, 120, 40);
-		frame.getContentPane().add(RunningButton);
+		//frame.getContentPane().
+		add(RunningButton);
+		
+		JLabel lblNewLabel = new JLabel("Music File List");
+		lblNewLabel.setBounds(32, 61, 92, 15);
+		//frame.getContentPane().
+		add(lblNewLabel);
 	}
 	
 	public void findMusicFile(File[] fileList) {
 		if (MusicList.getForeground() != Color.black) {
-			MusicList.setText(""); 
+		//	MusicList.setText(""); 
 			MusicList.setForeground(Color.black);
 			Font font1 = new Font("¸¼Àº °íµñ", Font.PLAIN, 12);
 			MusicList.setFont(font1);
@@ -193,7 +237,7 @@ public class test {
 					index++;						
 					pathlist.add(fileList[i].getCanonicalPath());							
 					namelist.add(fileName);							
-					MusicList.append(fileName + "\n"); //show up file name					
+				//	MusicList.append(fileName + "\n"); //show up file name					
 				}						
 				catch( java.io.IOException e ) { } 					
 			} // end for: through each dropped file				
@@ -208,7 +252,7 @@ public class test {
 	}
 	
 	public void RunTagEditor() {		
-		MusicList.setText("");
+	//	MusicList.setText("");
 		String fileName, artist, title; // = "";
 		int idx = 0; // index of " - "
 		int idx2 = 0; // index of ".mp3", 
@@ -225,13 +269,13 @@ public class test {
 				cnt++;
 			} else {
 				MusicList.setForeground(Color.red);
-				if (MusicList.getText().isBlank())
-					MusicList.append(" ERROR! There is no \" - \" in:\n");
+		//		if (MusicList.getText().isBlank())
+		//			MusicList.append(" ERROR! There is no \" - \" in:\n");
 				fail++;
-				MusicList.append(fail + ". " + fileName + "\n");
+		//		MusicList.append(fail + ". " + fileName + "\n");
 			}
 		}
-		if (MusicList.getText().isBlank())
+//		if (MusicList.getText().isBlank())
 			phrase2();
 		clearList();
 		JOptionPane.showMessageDialog(null,cnt+" file(s) successfully modified\n"+fail+
