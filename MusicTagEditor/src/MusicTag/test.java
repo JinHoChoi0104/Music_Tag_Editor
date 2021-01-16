@@ -34,8 +34,10 @@ public class test extends JPanel {
 	//private JFrame frame;
 
 	private JTextField PathInput = new JTextField("");
-	private JTable MusicList = new JTable();
-	JScrollPane scrollPane = new JScrollPane(MusicList);
+	private JTable DataSet = new JTable();
+	JScrollPane MusicList = new JScrollPane(DataSet);
+	
+	private DefaultTableModel model = new DefaultTableModel(new String[]{"File Name", "Artist", "Title"},0);
 	//contentPane.add(scrollPane);
 	
 	/**
@@ -54,14 +56,14 @@ public class test extends JPanel {
 	 */
 	public test() {
 		//setLayout(null);
-		String colNames[] = {"∆ƒ¿œ¿Ã∏ß", "Artist", "Title"};
-		DefaultTableModel model =  new DefaultTableModel(colNames, 0);
+		//String colNames[] = {"∆ƒ¿œ¿Ã∏ß", "Artist", "Title"};
+		//DefaultTableModel model =  new DefaultTableModel(colNames, 0);
 		
-		model.addRow(new Object[] {"haha","»´±Êµø","011-5-1177"});
 		
-		MusicList = new JTable(model);
-		scrollPane = new JScrollPane(MusicList);
-		add(scrollPane);
+		//MusicList = new JTable(model);
+		DataSet.setModel(model);
+		MusicList = new JScrollPane(DataSet);
+		add(MusicList);
 		initialize();
 	}
 	
@@ -108,8 +110,8 @@ public class test extends JPanel {
 	
 	public void phrase2() { // Path request phrases
 		Font font2 = new Font("∏º¿∫ ∞ÌµÒ", Font.ITALIC, 12);
-		MusicList.setForeground(Color.gray);
-		MusicList.setFont(font2);
+		DataSet.setForeground(Color.gray);
+		DataSet.setFont(font2);
 		//MusicList.setText("Drag and drop files here");
 	}
 
@@ -169,16 +171,17 @@ public class test extends JPanel {
 		/*
 		 * about MusicListWindow (textArea)
 		 */
-		scrollPane.setBounds(33, 80, 426, 390);
+		MusicList.setBounds(33, 80, 426, 390);
 		//frame.getContentPane().
-		add(scrollPane);
+		add(MusicList);
 		phrase2();
 		
-		new FileDrop(System.out, MusicList, /* dragBorder, */ new FileDrop.Listener() {
+	
+		new FileDrop(MusicList, /* dragBorder, */ new FileDrop.Listener() {
 			public void filesDropped(java.io.File[] fileList) {
 				findMusicFile(fileList);
-				DefaultTableModel model = (DefaultTableModel)MusicList.getModel();
-				model.addRow(new String[] {"","",""});
+				//DefaultTableModel model = (DefaultTableModel)DataSet.getModel();
+				
 			} // end filesDropped
 		}); // end FileDrop.Listener
 
@@ -224,11 +227,11 @@ public class test extends JPanel {
 	}
 	
 	public void findMusicFile(File[] fileList) {
-		if (MusicList.getForeground() != Color.black) {
+		if (DataSet.getForeground() != Color.black) {
 		//	MusicList.setText(""); 
-			MusicList.setForeground(Color.black);
+			DataSet.setForeground(Color.black);
 			Font font1 = new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 12);
-			MusicList.setFont(font1);
+			DataSet.setFont(font1);
 		}
 		for( int i = 0; i < fileList.length; i++ ) { //fileName = file.getName(); try
 			String fileName = fileList[i].getName();
@@ -236,8 +239,9 @@ public class test extends JPanel {
 				try{						
 					index++;						
 					pathlist.add(fileList[i].getCanonicalPath());							
-					namelist.add(fileName);							
-				//	MusicList.append(fileName + "\n"); //show up file name					
+					namelist.add(fileName);				
+					model.addRow(new String[] {fileName,"",""});
+				//	DataSet.append(fileName + "\n"); //show up file name					
 				}						
 				catch( java.io.IOException e ) { } 					
 			} // end for: through each dropped file				
@@ -268,14 +272,14 @@ public class test extends JPanel {
 				rewriteTag(pathlist.get(i), artist, title);
 				cnt++;
 			} else {
-				MusicList.setForeground(Color.red);
-		//		if (MusicList.getText().isBlank())
-		//			MusicList.append(" ERROR! There is no \" - \" in:\n");
+				DataSet.setForeground(Color.red);
+		//		if (DataSet.getText().isBlank())
+		//			DataSet.append(" ERROR! There is no \" - \" in:\n");
 				fail++;
-		//		MusicList.append(fail + ". " + fileName + "\n");
+		//		DataSet.append(fail + ". " + fileName + "\n");
 			}
 		}
-//		if (MusicList.getText().isBlank())
+//		if (DataSet.getText().isBlank())
 			phrase2();
 		clearList();
 		JOptionPane.showMessageDialog(null,cnt+" file(s) successfully modified\n"+fail+

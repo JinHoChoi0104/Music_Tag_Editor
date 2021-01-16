@@ -17,7 +17,24 @@ public class test2 extends JFrame{
     private DefaultTableModel tm = new DefaultTableModel(new String[]{"a","b","c"},2);
 
     public test2() {
-        table.setModel(tm);
+        table.setModel(tm);       
+        
+        //scroll.getDropTarget();
+        
+        scroll.setDropTarget(new DropTarget(){
+            @Override
+            public synchronized void drop(DropTargetDropEvent dtde) {
+                // handle drop outside current table (e.g. add row)
+                //super.drop(dtde);
+
+				//DefaultTableModel model = (DefaultTableModel)table.getModel();
+				tm.addRow(new String[] {"","",""});
+            }
+        });
+        
+        
+      
+        /*
         table.setDropTarget(new DropTarget(){
             @Override
             public synchronized void drop(DropTargetDropEvent dtde) {
@@ -31,17 +48,8 @@ public class test2 extends JFrame{
 				DefaultTableModel model = (DefaultTableModel)table.getModel();
 				model.addRow(new String[] {"","",""});
             }
-        });
-        scroll.setDropTarget(new DropTarget(){
-            @Override
-            public synchronized void drop(DropTargetDropEvent dtde) {
-                // handle drop outside current table (e.g. add row)
-                super.drop(dtde);
-
-				DefaultTableModel model = (DefaultTableModel)table.getModel();
-				model.addRow(new String[] {"","",""});
-            }
-        });
+        });*/
+        
         this.getContentPane().setLayout(new BorderLayout());
         this.getContentPane().add(scroll);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
