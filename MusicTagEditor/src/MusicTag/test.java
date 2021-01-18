@@ -8,9 +8,9 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedList;
 
 import javax.swing.JButton;
@@ -32,18 +32,15 @@ import org.jaudiotagger.tag.Tag;
 import net.iharder.dnd.FileDrop;
 
 public class test extends JPanel {
-
-	// private JFrame frame;
+	
 	private static JFrame win = new JFrame();
-
 	private JTextField PathInput = new JTextField("");
 	private JTable DataSet = new JTable();
 	private DefaultTableModel model = new DefaultTableModel(new String[] { "File Name", "Artist", "Title" }, 0) {
 		public boolean isCellEditable(int row, int column) { // all cells false
-			return false;
+			return false; //make cells are unable to edit
 		}
 	};
-
 	JScrollPane MusicList = new JScrollPane(DataSet);
 
 	private static int Xsize = 800;
@@ -57,6 +54,7 @@ public class test extends JPanel {
 	LinkedList<String> pathlist = new LinkedList<String>();
 	private static int index = 0;
 
+	
 	/**
 	 * Create the application.
 	 */
@@ -69,10 +67,10 @@ public class test extends JPanel {
 			TableColumn col = DataSet.getColumnModel().getColumn(i);
 			col.setPreferredWidth(Xsize / 18 * width[i]);
 		}
-
+		
 		MusicList = new JScrollPane(DataSet);
 		add(MusicList);
-
+		
 		initialize();
 	}
 
@@ -81,6 +79,9 @@ public class test extends JPanel {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		/*
+		 * about Main Window (JFrame)
+		 */
 		test panel = new test();
 		win.getContentPane().add(panel);
 		win.setBounds(300, 150, Xsize, 600);
@@ -99,30 +100,21 @@ public class test extends JPanel {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-
 		/*
-		 * about Main Window (JFrame)
+		 * about label (JLabel)
 		 */
-
-		/*
-		 * frame = new JFrame(); frame.setBounds(550, 100, 510, 610);
-		 * frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //what is this for???
-		 * frame.getContentPane().setLayout(null); frame.setTitle("Music Tag Editor");
-		 */
-
-		/*
-		 * about PathInputWindow (textField)
-		 */
-
 		JLabel lblNewLabel = new JLabel("Music File List");
 		lblNewLabel.setBounds(17, 52, 110, 15);
 		add(lblNewLabel);
 
-		PathInput.setBounds(17, 13, Xsize - 50, 23);
+		
+		/*
+		 * about PathInputWindow (textField)
+		 */
+		PathInput.setBounds(17, 13, 647, 23);
 		add(PathInput);
 		PathInput.setColumns(10);
 		phrase1();
-
 		PathInput.addFocusListener(new FocusListener() {
 			public void focusGained(FocusEvent e) {
 				Font font1 = new Font("¸¼Àº °íµñ", Font.PLAIN, 12);
@@ -132,21 +124,36 @@ public class test extends JPanel {
 					PathInput.setText("");
 				}
 			}
-
 			public void focusLost(FocusEvent e) {
 				if (PathInput.getText().isBlank())
 					phrase1();
 			}
 		});
-
 		PathInput.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { // Press Enter key
 				File fileList[] = new File(PathInput.getText()).listFiles();
 				findMusicFile(fileList);
 				phrase1();
+				PathInput.transferFocus();
 			}
 		});
+		
+		
+		/*
+		 * about add Button
+		 */
+		JButton addButton = new JButton("add");
+		addButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				File fileList[] = new File(PathInput.getText()).listFiles();
+				findMusicFile(fileList);
+				phrase1();
+			}
+		});
+		addButton.setBounds(676, 13, 91, 23);
+		add(addButton);
 
+		
 		/*
 		 * about MusicListWindow (textArea)
 		 */
@@ -158,26 +165,26 @@ public class test extends JPanel {
 				findMusicFile(fileList);
 			} // end filesDropped
 		}); // end FileDrop.Listener
-		// MusicList.setEditable (false); //make text area uneditalbe
 		class key implements KeyListener {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == 127) {
-					System.out.println("aaaaa");
-
 					removeMusic();
 				}
-				System.out.println(e);
 			}
-
 			public void keyReleased(KeyEvent e) {
 			}
-
 			public void keyTyped(KeyEvent e) {
 			}
 
 		}
 		DataSet.addKeyListener(new key());
 		DataSet.setFocusable(true);
+		win.addWindowListener( new WindowAdapter() {  //when window is open
+			public void windowOpened( WindowEvent e ){ 
+				MusicList.requestFocus(); //MusicList gets focus
+				} 
+			}
+		);
 
 		/*
 		 * about Remove Button
@@ -216,8 +223,9 @@ public class test extends JPanel {
 			}
 		});
 		RunningButton.setBounds(667, 520, 100, 30);
-		// frame.getContentPane().
 		add(RunningButton);
+		
+		
 	}
 
 	public void findMusicFile(File[] fileList) {
