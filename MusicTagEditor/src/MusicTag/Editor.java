@@ -31,7 +31,7 @@ import org.jaudiotagger.tag.Tag;
 
 import net.iharder.dnd.FileDrop;
 
-public class test extends JPanel {
+public class Editor extends JPanel {
 	
 	private static JFrame win = new JFrame();
 	private JTextField PathInput = new JTextField("");
@@ -57,7 +57,7 @@ public class test extends JPanel {
 	/**
 	 * Create the application.
 	 */
-	public test() {
+	public Editor() {
 		setLayout(null);
 
 		DataSet.setModel(model);
@@ -81,7 +81,7 @@ public class test extends JPanel {
 		/*
 		 * about Main Window (JFrame)
 		 */
-		test panel = new test();
+		Editor panel = new Editor();
 		win.getContentPane().add(panel);
 		win.setBounds(300, 150, Xsize, 600);
 		win.setTitle("Music Tag Editor");
@@ -322,6 +322,7 @@ public class test extends JPanel {
 			// and then commit the change
 			// f.commit(); //you can use this instead of code under
 			AudioFileIO.write(f);
+			f.delete();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
