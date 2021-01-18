@@ -42,7 +42,6 @@ public class test extends JPanel {
 		}
 	};
 	JScrollPane MusicList = new JScrollPane(DataSet);
-
 	private static int Xsize = 800;
 
 	/**
@@ -223,9 +222,7 @@ public class test extends JPanel {
 			}
 		});
 		RunningButton.setBounds(667, 520, 100, 30);
-		add(RunningButton);
-		
-		
+		add(RunningButton);		
 	}
 
 	public void findMusicFile(File[] fileList) {
@@ -250,7 +247,7 @@ public class test extends JPanel {
 						Tag tag = AudioFileIO.read(file).getTag();
 						String artist2 = tag.getFirst(FieldKey.ARTIST);
 						String title2 = tag.getFirst(FieldKey.TITLE);
-
+						
 						model.addRow(new String[] { fileName, artist2, title2 });
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -259,6 +256,7 @@ public class test extends JPanel {
 			}
 		}
 	}
+	
 
 	public void removeMusic() {
 		int[] row = DataSet.getSelectedRows();
@@ -270,6 +268,7 @@ public class test extends JPanel {
 		}
 		index -= row.length;
 	}
+	
 
 	public void clearList() {
 		index = 0;
@@ -277,6 +276,7 @@ public class test extends JPanel {
 		pathlist.clear();
 		model.setNumRows(0);
 	}
+	
 
 	public void RunTagEditor() {
 		String fileName, artist, title; // = "";
@@ -308,13 +308,13 @@ public class test extends JPanel {
 				cnt + " file(s) successfully modified\n" + fail + " file(s) failed to modified", "Information",
 				JOptionPane.WARNING_MESSAGE);
 	}
+	
 
 	public static void rewriteTag(String path, String artist, String title) {
 		File file = new File(path); // MP3 파일의 경로를 이용하여 File Object를 생성한다.
 		try {
 			// make modification to the tag class
 			AudioFile f = AudioFileIO.read(file);
-
 			Tag tag = f.getTag();
 			tag.setField(FieldKey.ARTIST, artist);
 			tag.setField(FieldKey.TITLE, title);
@@ -322,10 +322,8 @@ public class test extends JPanel {
 			// and then commit the change
 			// f.commit(); //you can use this instead of code under
 			AudioFileIO.write(f);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 }
