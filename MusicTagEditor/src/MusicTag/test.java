@@ -109,6 +109,9 @@ public class test extends JPanel {
 		//win.setSize(540,400);
 		win.setVisible(true);
 		
+		
+	
+		
 	}
 	
 
@@ -131,9 +134,6 @@ public class test extends JPanel {
 	private void initialize() {
 		
 		
-
-		
-		
 		class key implements KeyListener{  
             public void keyPressed(KeyEvent e) {
             	if( e.getKeyCode() == 127 ) {
@@ -149,9 +149,11 @@ public class test extends JPanel {
                         
         }       
         
-		win.addKeyListener(new key());
-		win.setFocusable(true);
+		DataSet.addKeyListener(new key());
+		DataSet.setFocusable(true);
 		
+		
+	
 		/*
 		 * about Main Window (JFrame)
 		 */
@@ -202,9 +204,7 @@ public class test extends JPanel {
 			}
 		});
 		
-		
-		
-		
+
 		
 		/*
 		 * about MusicListWindow (textArea)
