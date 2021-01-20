@@ -322,7 +322,7 @@ public class Editor extends JPanel {
 			// and then commit the change
 			// f.commit(); //you can use this instead of code under
 			AudioFileIO.write(f);
-			f.delete();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
