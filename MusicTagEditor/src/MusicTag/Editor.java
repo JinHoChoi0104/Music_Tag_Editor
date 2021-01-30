@@ -11,6 +11,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.LinkedList;
 
 import javax.swing.JButton;
@@ -51,7 +52,7 @@ public class Editor extends JPanel {
 	 */
 	LinkedList<String> namelist = new LinkedList<String>();
 	LinkedList<String> pathlist = new LinkedList<String>();
-	private static int index = 0;
+	private static int num = 0; //number of music files added
 
 	
 	/**
@@ -226,10 +227,11 @@ public class Editor extends JPanel {
 	}
 
 	public void findMusicFile(File[] fileList) {
-		if (DataSet.getForeground() != Color.black) {
+		if (DataSet.getForeground() != Color.black) { // check if music file is on list now
 			clearList();
 			DataSet.setForeground(Color.black);
 		}
+//		File file = new File();
 		for (int i = 0; i < fileList.length; i++) {
 			String path = fileList[i].getPath();
 			int idx = pathlist.indexOf(path); //return -1 if there is no path in pathlist
@@ -238,16 +240,19 @@ public class Editor extends JPanel {
 				String fileName = fileList[i].getName();
 
 				if (fileName.matches(".*.mp3")) { //add only mp3 files
-					index++;
+					
 					pathlist.add(fileList[i].getPath());
 					namelist.add(fileName);
 
-					File file = new File(pathlist.get(i)); // MP3 파일의 경로를 이용하여 File Object를 생성한다.
+					File file = new File(pathlist.get(num)); // MP3 파일의 경로를 이용하여 File Object를 생성한다.
+					num++;
+					
+					String artist2 = "";
+					String title2 = "";
 					try {
 						Tag tag = AudioFileIO.read(file).getTag();
-						String artist2 = tag.getFirst(FieldKey.ARTIST);
-						String title2 = tag.getFirst(FieldKey.TITLE);
-						
+						artist2 = tag.getFirst(FieldKey.ARTIST);
+						title2 = tag.getFirst(FieldKey.TITLE);
 						model.addRow(new String[] { fileName, artist2, title2 });
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -266,12 +271,12 @@ public class Editor extends JPanel {
 			namelist.remove(row[i] - i);
 			pathlist.remove(row[i] - i);
 		}
-		index -= row.length;
+		num -= row.length;
 	}
 	
 
 	public void clearList() {
-		index = 0;
+		num = 0;
 		namelist.clear();
 		pathlist.clear();
 		model.setNumRows(0);
@@ -284,7 +289,7 @@ public class Editor extends JPanel {
 		int idx2 = 0; // index of ".mp3",
 		int cnt = 0, fail = 0; // count of file(s) successfully modified
 
-		for (int i = 0; i < index; i++) {
+		for (int i = 0; i < num; i++) {
 			fileName = namelist.get(fail);
 			if (fileName.matches(".* - .*")) {
 				idx = fileName.indexOf(" - ");
@@ -298,12 +303,12 @@ public class Editor extends JPanel {
 				namelist.remove(fail);
 				pathlist.remove(fail);
 			} else {
-				DataSet.setForeground(Color.red);
 				fail++;
 			}
 		}
-
-		index = index - cnt;
+		if(fail!=0)
+			DataSet.setForeground(Color.red);
+		num = num - cnt;
 		JOptionPane.showMessageDialog(null,
 				cnt + " file(s) successfully modified\n" + fail + " file(s) failed to modified", "Information",
 				JOptionPane.WARNING_MESSAGE);
