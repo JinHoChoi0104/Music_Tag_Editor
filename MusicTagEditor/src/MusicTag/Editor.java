@@ -251,7 +251,7 @@ public class Editor extends JPanel {
 					String title2 = "";
 					try {
 						Tag tag = AudioFileIO.read(file).getTag();
-						artist2 = tag.getFirst(FieldKey.ARTIST);
+						artist2 = tag.getFirst(FieldKey.ARTIST); //occur error when pointing Null value
 						title2 = tag.getFirst(FieldKey.TITLE);
 						model.addRow(new String[] { fileName, artist2, title2 });
 					} catch (Exception e) {
@@ -260,7 +260,7 @@ public class Editor extends JPanel {
 				}
 			}
 		}
-	}
+	} 
 	
 
 	public void removeMusic() {
