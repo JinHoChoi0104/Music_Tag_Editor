@@ -1,0 +1,24 @@
+{
+  "name": "music_tag_editor",
+  "version": "1.0.0",
+  "description": "![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=java&logoColor=white)\r <br>\r ## 🤖Toy Project🤖 - For my usage",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JinHoChoi0104/Music_Tag_Editor.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JinHoChoi0104/Music_Tag_Editor/issues"
+  },
+  "homepage": "https://github.com/JinHoChoi0104/Music_Tag_Editor#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-sass": "^5.0.0",
+    "sass": "^1.44.0"
+  }
+}
