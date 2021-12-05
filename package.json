@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/JinHoChoi0104/Music_Tag_Editor#readme",
   "devDependencies": {
+    "browser-sync": "^2.27.7",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
     "gulp-sass": "^5.0.0",
